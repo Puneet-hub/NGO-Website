@@ -10,17 +10,23 @@ export interface Service {
   category: string;
 }
 
+// ✅ Backend URL (change only here in future)
+const API_URL = "https://ngo-website-dhck.onrender.com";
+
 export default function useServices() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/services')
+    axios.get(`${API_URL}/api/services`)
       .then(res => {
         setServices(res.data);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(err => {
+        console.error("❌ Error fetching services:", err);
+        setLoading(false);
+      });
   }, []);
 
   return { services, loading };
