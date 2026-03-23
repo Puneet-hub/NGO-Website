@@ -6,7 +6,7 @@ import {
 import { motion, useInView } from 'framer-motion';
 import axios from 'axios';
 import {
-  Phone, MessageCircle, Heart, Users,
+  Heart, Users,
   BookOpen, Award, CheckCircle,
   Sparkles, Mail, User, ArrowRight,
 } from 'lucide-react';
