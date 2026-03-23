@@ -9,9 +9,10 @@ import { useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const NAV_LINKS = [
-  { label: 'Home', path: '/' },
-  { label: 'About', path: '/about' },
+  { label: 'Home',     path: '/' },
+  { label: 'About',    path: '/about' },
   { label: 'Services', path: '/services' },
+  { label: 'Blog',     path: '/blog' },
 ];
 
 export default function Navbar() {

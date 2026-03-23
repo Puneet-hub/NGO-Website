@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Services from './pages/Services';
 import About from './pages/About';
 import Donate from './pages/Donate';
+import Blog from './pages/Blog';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
@@ -42,6 +43,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/donate" element={<Donate />} />
           <Route path="/contact" element={<Donate />} /> {/* swap with <Contact /> when ready */}
+          <Route path="/blog" element={<Blog />} />
         </Routes>
         <Footer />
       </BrowserRouter>
