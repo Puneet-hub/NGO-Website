@@ -5,19 +5,16 @@ const nodemailer = require('nodemailer');
 
 const app = express();
 
-// ✅ Allow both local + deployed frontend
+// ✅ FIXED CORS (IMPORTANT)
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://ngo-website.vercel.app' // 👉 apna Vercel URL yaha daal
-  ]
+  origin: '*',   // 🔥 allows all (no more CORS error)
 }));
 
 app.use(express.json());
 
 console.log('🚀 Backend Starting...');
 
-// ─── Nodemailer Transporter (Brevo SMTP) ─────────────────────────────────────
+// ─── Nodemailer Transporter (Brevo SMTP) ─────────────────────────
 
 const transporter = nodemailer.createTransport({
   host: 'smtp-relay.brevo.com',
@@ -30,7 +27,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Verify transporter
-transporter.verify((error, success) => {
+transporter.verify((error) => {
   if (error) {
     console.error('❌ Email transporter error:', error.message);
   } else {
@@ -38,7 +35,7 @@ transporter.verify((error, success) => {
   }
 });
 
-// ─── Services ─────────────────────────────────────────────────────────────
+// ─── Services ───────────────────────────────────────────────────
 
 const services = [
   {
@@ -67,7 +64,8 @@ const services = [
   }
 ];
 
-// Routes
+// ─── Routes ─────────────────────────────────────────────────────
+
 app.get('/api/services', (req, res) => {
   console.log('📊 Services requested');
   res.json(services);
@@ -78,7 +76,7 @@ app.get('/api/services/:id', (req, res) => {
   res.json(service || {});
 });
 
-// ─── Contact API ─────────────────────────────────────────────────────────
+// ─── Contact API ───────────────────────────────────────────────
 
 app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body;
@@ -112,13 +110,13 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// ─── ROOT ROUTE (IMPORTANT FOR RENDER) ─────────────────────────────
+// ─── ROOT ROUTE ────────────────────────────────────────────────
 
 app.get('/', (req, res) => {
   res.send('Backend is running 🚀');
 });
 
-// ─── START SERVER (FIXED) ─────────────────────────────────────────
+// ─── START SERVER (RENDER FIX) ────────────────────────────────
 
 const PORT = process.env.PORT || 5000;
 
