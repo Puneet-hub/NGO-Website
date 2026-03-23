@@ -5,16 +5,21 @@ const nodemailer = require('nodemailer');
 
 const app = express();
 
-// ✅ FIXED CORS (IMPORTANT)
+// ✅ FULLY FIXED CORS (PRODUCTION SAFE)
 app.use(cors({
-  origin: '*',   // 🔥 allows all (no more CORS error)
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// ✅ VERY IMPORTANT (preflight fix)
+app.options('*', cors());
 
 app.use(express.json());
 
 console.log('🚀 Backend Starting...');
 
-// ─── Nodemailer Transporter (Brevo SMTP) ─────────────────────────
+// ─── Nodemailer Transporter ─────────────────────────
 
 const transporter = nodemailer.createTransport({
   host: 'smtp-relay.brevo.com',
@@ -35,7 +40,7 @@ transporter.verify((error) => {
   }
 });
 
-// ─── Services ───────────────────────────────────────────────────
+// ─── Services ─────────────────────────────────────
 
 const services = [
   {
@@ -64,7 +69,7 @@ const services = [
   }
 ];
 
-// ─── Routes ─────────────────────────────────────────────────────
+// ─── Routes ───────────────────────────────────────
 
 app.get('/api/services', (req, res) => {
   console.log('📊 Services requested');
@@ -76,7 +81,7 @@ app.get('/api/services/:id', (req, res) => {
   res.json(service || {});
 });
 
-// ─── Contact API ───────────────────────────────────────────────
+// ─── Contact API ─────────────────────────────────
 
 app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body;
@@ -110,13 +115,13 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// ─── ROOT ROUTE ────────────────────────────────────────────────
+// ─── Root Route ─────────────────────────────────
 
 app.get('/', (req, res) => {
   res.send('Backend is running 🚀');
 });
 
-// ─── START SERVER (RENDER FIX) ────────────────────────────────
+// ─── Start Server ───────────────────────────────
 
 const PORT = process.env.PORT || 5000;
 
